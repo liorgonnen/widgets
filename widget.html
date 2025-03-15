@@ -3,59 +3,79 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculated Countdown</title>
+    <title>Countdown Timer</title>
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
             margin: 0;
             padding: 10px;
-            background-color: transparent;
             display: flex;
             justify-content: center;
+            align-items: center;
+            background-color: transparent;
         }
         .countdown-text {
-            font-size: 16px;
-            color: #37352f;
+            text-align: center;
+            font-size: 1.2rem;
+            color: D4D4D4;
         }
     </style>
 </head>
 <body>
-    <div id="countdown" class="countdown-text">Calculating...</div>
+    <div class="countdown-text" id="countdown"></div>
 
     <script>
-        // Calculate days between dates (one-time calculation)
-        function calculateDaysRemaining() {
-            const targetDate = new Date('2025-04-28T00:00:00');
-            const today = new Date();
+        // Define target date in a single variable
+        const targetDateString = "April 28, 2025";
+        const targetDate = new Date('2025-04-28T00:00:00');
+        
+        // Format time duration
+        function formatTimeDifference(ms) {
+            // Convert to seconds
+            const totalSeconds = Math.floor(ms / 1000);
             
-            // Reset hours to ensure we're just counting full days
-            today.setHours(0, 0, 0, 0);
+            // Extract time parts
+            const days = Math.floor(totalSeconds / 86400);
+            const hours = Math.floor((totalSeconds % 86400) / 3600);
+            const minutes = Math.floor((totalSeconds % 3600) / 60);
+            const seconds = totalSeconds % 60;
             
-            // Calculate difference in days
-            const diffTime = targetDate - today;
-            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            // Format with leading zeros
+            const timeString = [
+                hours.toString().padStart(2, '0'),
+                minutes.toString().padStart(2, '0'),
+                seconds.toString().padStart(2, '0')
+            ].join(':');
             
-            return diffDays;
+            return {
+                days,
+                timeString
+            };
         }
         
-        // Calculate current time for a static display
-        function getCurrentTimeString() {
+        // Update the countdown display
+        function updateCountdown() {
             const now = new Date();
-            const hours = now.getHours().toString().padStart(2, '0');
-            const minutes = now.getMinutes().toString().padStart(2, '0');
-            const seconds = now.getSeconds().toString().padStart(2, '0');
+            const totalMs = targetDate - now;
             
-            return `${hours}:${minutes}:${seconds}`;
+            if (totalMs <= 0) {
+                document.getElementById('countdown').textContent = `${targetDateString} - The day is here!`;
+                return;
+            }
+            
+            // Format time using our formatter
+            const { days, timeString } = formatTimeDifference(totalMs);
+            
+            // Update DOM with the single line format
+            document.getElementById('countdown').textContent = 
+                `${targetDateString} - ${days} days remaining! (${timeString})`;
         }
         
-        // Set the static content with calculated values
-        window.onload = function() {
-            const daysRemaining = calculateDaysRemaining();
-            const timeString = getCurrentTimeString();
-            
-            document.getElementById('countdown').textContent = 
-                `April 28, 2025 - ${daysRemaining} days remaining! (${timeString})`;
-        };
+        // Initial update
+        updateCountdown();
+        
+        // Update every second
+        setInterval(updateCountdown, 1000);
     </script>
 </body>
 </html>
