@@ -17,7 +17,18 @@
         .countdown-text {
             text-align: center;
             font-size: 1.2rem;
-            color: D4D4D4;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .countdown-text {
+                color: rgba(255, 255, 255, 0.81);  /* Notion's dark theme text color */
+            }
+        }
+
+        @media (prefers-color-scheme: light) {
+            .countdown-text {
+                color: rgba(55, 53, 47, 1);  /* Notion's light theme text color */
+            }
         }
     </style>
 </head>
@@ -26,8 +37,8 @@
 
     <script>
         // Define target date in a single variable
-        const targetDateString = "April 28, 2025";
-        const targetDate = new Date('2025-04-28T00:00:00');
+        const targetDateString = "April 28";  // Simplified date string
+        const targetDate = new Date('2025-04-28T18:00:00');  // Set to 6 PM
         
         // Format time duration
         function formatTimeDifference(ms) {
@@ -38,10 +49,10 @@
             const days = Math.floor(totalSeconds / 86400);
             const hours = Math.floor((totalSeconds % 86400) / 3600);
             const minutes = Math.floor((totalSeconds % 3600) / 60);
-            const seconds = totalSeconds % 60;
+            const seconds = Math.floor(totalSeconds % 60);
             
             // Format with leading zeros
-            const timeString = [
+            const timeString = [    
                 hours.toString().padStart(2, '0'),
                 minutes.toString().padStart(2, '0'),
                 seconds.toString().padStart(2, '0')
@@ -66,9 +77,9 @@
             // Format time using our formatter
             const { days, timeString } = formatTimeDifference(totalMs);
             
-            // Update DOM with the single line format
+            // Update DOM with the requested format
             document.getElementById('countdown').textContent = 
-                `${targetDateString} - ${days} days remaining! (${timeString})`;
+                `${targetDateString} - ${days} Days Remaining (${timeString})`;
         }
         
         // Initial update
