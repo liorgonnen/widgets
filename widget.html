@@ -13,21 +13,26 @@
             justify-content: center;
             align-items: center;
             background-color: transparent;
+            min-height: 100vh;
+            width: 100%;
         }
         .countdown-text {
             text-align: center;
-            font-size: 1.2rem;
+            font-size: 2rem;
+            width: 100%;
         }
 
         @media (prefers-color-scheme: dark) {
             .countdown-text {
-                color: rgba(255, 255, 255, 0.81);  /* Notion's dark theme text color */
+                color: rgba(255, 255, 255, 0.81);
+                color: rgb(255, 255, 255);
             }
         }
 
         @media (prefers-color-scheme: light) {
             .countdown-text {
-                color: rgba(55, 53, 47, 1);  /* Notion's light theme text color */
+                color: rgba(55, 53, 47, 1);
+                color: rgb(55, 53, 47);
             }
         }
     </style>
