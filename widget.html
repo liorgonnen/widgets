@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculated Countdown</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+            margin: 0;
+            padding: 10px;
+            background-color: transparent;
+            display: flex;
+            justify-content: center;
+        }
+        .countdown-text {
+            font-size: 16px;
+            color: #37352f;
+        }
+    </style>
+</head>
+<body>
+    <div id="countdown" class="countdown-text">Calculating...</div>
+
+    <script>
+        // Calculate days between dates (one-time calculation)
+        function calculateDaysRemaining() {
+            const targetDate = new Date('2025-04-28T00:00:00');
+            const today = new Date();
+            
+            // Reset hours to ensure we're just counting full days
+            today.setHours(0, 0, 0, 0);
+            
+            // Calculate difference in days
+            const diffTime = targetDate - today;
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            
+            return diffDays;
+        }
+        
+        // Calculate current time for a static display
+        function getCurrentTimeString() {
+            const now = new Date();
+            const hours = now.getHours().toString().padStart(2, '0');
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+            const seconds = now.getSeconds().toString().padStart(2, '0');
+            
+            return `${hours}:${minutes}:${seconds}`;
+        }
+        
+        // Set the static content with calculated values
+        window.onload = function() {
+            const daysRemaining = calculateDaysRemaining();
+            const timeString = getCurrentTimeString();
+            
+            document.getElementById('countdown').textContent = 
+                `April 28, 2025 - ${daysRemaining} days remaining! (${timeString})`;
+        };
+    </script>
+</body>
+</html>
